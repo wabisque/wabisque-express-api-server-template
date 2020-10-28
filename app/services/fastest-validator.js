@@ -2,7 +2,10 @@ const fastestValidator = require('fastest-validator');
 
 const validator = new fastestValidator({
   useNewCustomCheckerFunction: true,
-  messages: { confirmPassword: "The '{field}' field does not match the 'password' field." }
+  messages: {
+    confirmPassword: "The '{field}' field does not match the '{passwordField}' field.",
+    fieldExistsInDb: "The '{field}' provided has already been taken"
+  }
 });
 
 function validate(schema, data) {

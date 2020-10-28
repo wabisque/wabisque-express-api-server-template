@@ -1,46 +1,101 @@
-function error(err, req, res, next) {
-  //TODO:: This should see some change.
-  const group1 = [ 'requestValidationError' ];
-  const group2 = [ 'SequelizeUniqueConstraintError' ];
-  const group3 = [ 'authenticationError' ];
-  const group4 = [ 'authorizationError' ];
-
-  let status = 500;
-  let formErrors = [];
-  let notifications = [ req.notify('Server Error', 'The server seems unresponsive.', 'danger') ];
-
-  if(!!err.data) {
-    if(group1.includes(err.data.name)) {
-      status = 422;
-      notifications = err.notifications;
-      formErrors = err.data.errors
-    } else if(group2.includes(err.data.name)) {
-      status = 409;
-      notifications = [ req.notify('Unique Constraint Error', 'There is a unique contraint server error. Please correct any errors associated with any fields.', 'danger') ];
-      err.data.errors.forEach(formErr => {
-        formErrors.push({
-          type: formErr.type,
-          message: formErr.message,
-          field: formErr.path,
-          actual: formErr.value
-        })
-      })
-    } else if(group3.includes(err.data.name)) {
-      status = 401;
-      notifications = err.notifications;
-    } else if(group4.includes(err.data.name)) {
-      status = 403;
-      notifications = err.notifications;
-    }
-
-    res.status(status).send({ notifications: notifications, formErrors: formErrors })
-  } else {
-    res.status(500).send(err)
-  }
-}
+const models = require('../../database/models');
 
 function exec(app) {
-  app.use(error)
+  function error(err, req, res, next) {
+    //TODO:: This should see some change.
+    const responseData = {};
+    let status = 500;
+
+    if(!!err.name) {
+      switch (err.name) {
+        case 'requestValidationError':
+          status = 422;
+
+          if(!!err.errors) responseData.formErrors = err.errors;
+          break;
+        
+        case 'SequelizeUniqueConstraintError':
+          if(!!err.errors) {
+            const identifierOptions = [ 'email', 'username' ];
+  
+            responseData.formErrors = [];
+  
+            err.errors.forEach(function(formError) {
+              responseData.formErrors.push({
+                type: formError.type,
+                message: (identifierOptions.includes(formError.path) && formError.type == 'unique violation' && formError.instance instanceof models.User) ? `The '${formError.path}' already belongs to another user.` : formError.message,
+                field: formError.path,
+                actual: formError.value
+              })
+            })
+          }
+          break;
+
+        case 'authenticationError':
+          status = 401;
+
+          if(!!err.errors) responseData.formErrors = err.errors;
+          break;
+
+        case 'authorizationError':
+          status = 403;
+
+          if(!!err.errors) responseData.formErrors = err.errors;
+          break;
+      }
+    }
+
+    if(!!err.notifyTypes && Array.isArray(err.notifyTypes) && err.notifyTypes.length > 0) {
+      responseData.notifications = [];
+
+      err.notifyTypes.forEach(function (notifyType) {
+        let message;
+        switch (notifyType) {
+          case 'Server Error':
+            message = 'The server seems to be down at the moment';
+            break;
+
+          case 'Server Unique Constraint Error':
+            message = 'The has been a unique constraint violation in the server. Please correct any errors associated with any fields.';
+            break;
+
+          case 'Authorization Error':
+            message = 'You are not authorized to access this resource.';
+            break;
+
+          case 'Inconsistent Credentials':
+            message = 'The provided credentials do not match any account in our records.';
+            break;
+
+          case 'Unknown Credentials':
+            message = 'There is no registered account with these credentials in our records.';
+            break;
+
+          case 'Invalid Credentials':
+            message = 'The provided credentials are invalid. Please correct any errors associated with any fields.';
+            break;
+
+          case 'Invalid Refresh Token':
+            message = 'The provided refresh token is invalid. Please provide a valid one.';
+            break;
+
+          case 'Invalid Form Data':
+            message = 'The provided form data is invalid. Please correct any errors associated with any form fields.';
+            break;
+        }
+
+        if(!!message) responseData.notifications.push(req.notify(notifyType, message, 'danger'))
+      });
+
+      if(responseData.notifications.length == 0) delete responseData.notifications
+    }
+
+    res.status(status).send(responseData)
+  }
+
+  const middleware = [ error ];
+
+  app.use(...middleware)
 }
 
 module.exports = exec

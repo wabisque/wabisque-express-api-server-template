@@ -3,31 +3,47 @@ const cors = require('cors');
 
 const fastestValidatorService = require('../../services/fastest-validator');
 
-function notify(req, res, next) {
-  req.notify = (title, message, status = 'success') => {
-    const statusOptions = ['success', 'info', 'warning', 'danger'];
-
-    return {
-      status: statusOptions.includes(status) ? status : statusOptions[0],
-      title: title,
-      message: message
+function exec(app) {
+  function trim(req, res, next) {
+    for(const field in req.body) {
+      if((typeof req.body[field] == 'string' || req.body[field] instanceof String) && !req.body[field]) req.body[field] = null
     }
+
+    next()
   }
 
-  next()
-}
+  function notify(req, res, next) {
+    req.notify = function (title, message, status = 'success') {
+      const statusOptions = ['success', 'info', 'warning', 'danger'];
+  
+      return {
+        status: statusOptions.includes(status) ? status : statusOptions[0],
+        title: title,
+        message: message
+      }
+    }
+  
+    next()
+  }
+  
+  function validate(req, res, next) {
+    req.validate = function (schema) {
+      return fastestValidatorService.validate(schema, req.body)
+    }
+  
+    next()
+  }
 
-function validate(req, res, next) {
-  req.validate = schema => fastestValidatorService.validate(schema, req.body);
+  const middleware = [
+    cors(),
+    express.json(),
+    express.urlencoded({ extended: true }),
+    trim,
+    notify,
+    validate
+  ];
 
-  next()
-}
-
-function exec(app) {
-  app.use(cors());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  app.use(notify, validate)
+  app.use(...middleware)
 }
 
 module.exports = exec

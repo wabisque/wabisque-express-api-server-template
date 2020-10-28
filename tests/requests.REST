@@ -1,0 +1,46 @@
+###
+// Login route test
+POST http://localhost:8181/api/auth/login
+Content-Type: application/json
+
+{
+  "identifier": "super-admin",
+  "password": "mysecret"
+}
+
+###
+// Logout route test
+GET http://localhost:8181/api/auth/logout
+// Provide a valid bearer token
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImlhdCI6MTYwMzg3MTg3NiwiZXhwIjoxNjAzODcyMjk2fQ.mmlrQbAZff22-sXra534RBCA_lhr2_f8qKbA0OPBt33eUtpSwZoA9nogcOi0W_fBatfsaI6mXpgp5fA9h0h8fPTHXaMo6s2y17ifk91dkNEjYk1Cj2WTNCm2ZX4G36ONoBCCPEfCYd6s5B5k3xqPQlktx9o1OXUVvtK2L_NgvXDqKchtavvVVMljgWJ_hVLVrANdrO--CTiRFzbsgsTDVs6JBUuw02t_jeDzJoGxboBWUMq0VvO6A37xrr8WjifyZxDpAV-IxGwisLLRIFqeiqN-H-pe92M3NYkQrrH7UfzALl94HdhgXksp6iEWjYLDpJ9005siaVYepzRboITeg7skpUS17Lk7JGO6aK0tRsv4_F34X0LjdRDNw2XrUqYV8oqr8qopCxvyi5K5FT0QZXFm03lS4TxjWIqrUTYMNLkfVPl-IaHT84mwx4PmXSRA3i8sGEo4rXaltwkr2c_1PN-J42z2UVGe3bENYBJyr65uS5ogomDcUh4IHNRr7A9dEwfTh5nNerJ7c2IjxYfpUEskQXAcBj4diOW1XNBSj_lbLkRitgGE-6z5eXca5t-U62YQnWPPhb_6e1sfmv1O9zxCAk69cCdqm0kjPLEd7AoS0ECKee5pplRbRCbH8idhz52ziPng49iW1kLKYG-tzQhzaYmDbv5CK1OtsuD5WF4
+
+###
+// Register route test
+POST http://localhost:8181/api/auth/register
+Content-Type: application/json
+
+{
+  "first_name": "User",
+  "last_name": "One",
+  "other_names": null,
+  "email": "user1@mail.io",
+  "username": "user1",
+  "phone_number": null,
+  "password": "mysecret",
+  "confirm_password": "mysecret"
+}
+
+###
+// User route test
+GET http://localhost:8181/api/auth/user
+// Provide a valid bearer token
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImlhdCI6MTYwMzg3MTg3NiwiZXhwIjoxNjAzODcyMjk2fQ.mmlrQbAZff22-sXra534RBCA_lhr2_f8qKbA0OPBt33eUtpSwZoA9nogcOi0W_fBatfsaI6mXpgp5fA9h0h8fPTHXaMo6s2y17ifk91dkNEjYk1Cj2WTNCm2ZX4G36ONoBCCPEfCYd6s5B5k3xqPQlktx9o1OXUVvtK2L_NgvXDqKchtavvVVMljgWJ_hVLVrANdrO--CTiRFzbsgsTDVs6JBUuw02t_jeDzJoGxboBWUMq0VvO6A37xrr8WjifyZxDpAV-IxGwisLLRIFqeiqN-H-pe92M3NYkQrrH7UfzALl94HdhgXksp6iEWjYLDpJ9005siaVYepzRboITeg7skpUS17Lk7JGO6aK0tRsv4_F34X0LjdRDNw2XrUqYV8oqr8qopCxvyi5K5FT0QZXFm03lS4TxjWIqrUTYMNLkfVPl-IaHT84mwx4PmXSRA3i8sGEo4rXaltwkr2c_1PN-J42z2UVGe3bENYBJyr65uS5ogomDcUh4IHNRr7A9dEwfTh5nNerJ7c2IjxYfpUEskQXAcBj4diOW1XNBSj_lbLkRitgGE-6z5eXca5t-U62YQnWPPhb_6e1sfmv1O9zxCAk69cCdqm0kjPLEd7AoS0ECKee5pplRbRCbH8idhz52ziPng49iW1kLKYG-tzQhzaYmDbv5CK1OtsuD5WF4
+
+###
+// Register route test
+POST http://localhost:8181/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImlhdCI6MTYwMzgyMTU2NywiZXhwIjoxNjA0NDI2MzY3fQ.tkpilbIIWY6rzXxrHGftYR3s1x736MiP0CVKYdBy7IIMQs1xKcDOwGydopslCZYOm_h7NO7jYF2rfZTr-3b4CGcr4CLaXBNmydkxAp6_ZGghXVZX-QWFziWXGWDFzH9iqpsCXNpAQ8kZrE5MQYSK4AC4HZVRrEyzxzW1YUvXN6Fd0d5XKGlBm61uZkC_zIXu_R9IEodMWs4J188-s2_Q1fpAMx7CnS-tCwUubQ2NmzWhvDC6oyvAdkIgQROrVmOhcg1H1ZYo63pQPo1ywfHHhnx_uw-uiUsJpZa1fqPM8iC4zx-6tqf55AKTmy3-QgE7Aw2ARrzqzSuksPJIO6R5QBGmZANiddhDXZOAQgBcIm3dSoDEqso0h5BssiXHfgECKgopm7y-N8-XsJcy4TjQ-RQyc-BqFSTB-_pQNTcUNj3HkGs2PxkFvZpDac7nmVTGRxNwGCyotiNKVenSTWJNjXoiJzfD6ICVraY1RpbY-kq3eAyNhhGhWpZrKzdpj6kGxDJVTtJeYa_2Fn-ansC35jOIj40P96MtpDiWiUnW8ZaBjPmB-5itt9H2I9KkuP7M-VjAT5s8EGQUdFtv3tZX_ezWNFcyuKM-PREg17gU_wrc7XUm-3E49cokCAmkS71S_7h3Puc47X3MmVx-LV0VFVISEOxheDKKLkqBy1Z4jbY"
+}
