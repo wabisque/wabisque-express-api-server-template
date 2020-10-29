@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 const express = require('express');
 
-// start:: Dev tools - These lines of code woul be removed during production.
+// start:: Dev tools - These lines of code would be removed during production.
 const morgan = require('morgan');
 // end:: Dev tools
 
@@ -19,7 +19,7 @@ dotenv.config();
 // creation of the express server app.
 const app = express();
 
-// start:: Dev tools - These lines of code woul be removed during production.
+// start:: Dev tools - These lines of code would be removed during production.
 app.use(morgan('dev'))
 // end:: Dev tools
 
@@ -36,9 +36,9 @@ routes(app);
 //registration for error middleware
 errorMiddleware(app);
 
-// initializatin of the express server app.
-app.listen(process.env.DEV_PORT, function (error) {
+// initialization of the express server app.
+app.listen(process.env.SERVER_PORT, function (error) {
   if(error) return console.log('ERROR', error);
 
-  console.log('\x1b[0m %s\x1b[36m %s\x1b[0m','\n *** server running on', `http://localhost:${process.env.DEV_PORT}`, '***\n')
+  console.log('\x1b[0m %s\x1b[36m %s\x1b[0m','\n *** server running on', `http://localhost:${process.env.SERVER_PORT}`, '***\n')
 });
