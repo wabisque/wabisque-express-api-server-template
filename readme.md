@@ -1,5 +1,19 @@
 # wabisque-express-api-server-template
 
+## Table of Contents
+
+* [Overview](#overview)
+    * [Initializing the Project](#initializing-the-project)
+    * [Project Layout](#project-layout)
+    * [Starting Dependencies of the Project](#starting-dependencies-of-the-project)
+* [ENV Variables](#env-variables)
+* [The Config Folder](#the-config-folder)
+* [The Controllers Folder](#the-controllers-folder)
+* [The Database Folder](#the-database-folder)
+* [The Middleware Folder](#the-middleware-folder)
+* [The Routes Folder](#the-routes-folder)
+* [The Services Folder](#the-services-folder)
+
 ## Overview
 
 This project is an API template made with express for full stack web developer who want to build both frontend and backend with JavaScript. 
