@@ -152,7 +152,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-console.log('The value of my ENV variable is:', process.end.DEV_AGE);
+console.log('The value of my ENV variable is:', process.env.DEV_AGE);
 ```
 
 Below is the result when the target file is run.
@@ -185,3 +185,158 @@ And their uses are as follows:
     *	**PASSWORD**: The password of the user trying to access the database server.
     *	**DATABASE**: The database to be utilized by the server.
 *	**SERVER_PORT**: The port number at which the server listens to requests. Leave this variable blank if you’d like to use the default port number.
+
+## The Config Folder
+
+Config files hold configuration data needed by functions and “services” of the server to operate. All config files are stored in the “app/config” folder. Here’s a look into the “app/config” folder upon freshly downloading this project:
+
+![config-1](./documents/images/config-1.png)
+
+* The `database.js` file holds data for creating database connections in the various environment stages – development, testing and production. I’d urge you to refrain from changing the value of any variable which has an ENV variable assigned to it – change the ENV variable rather.
+* The `jwt.js` file hold the expiry time for JWTs.
+
+## The Controllers Folder
+
+Controllers are files that specify the behavior of routes created in the files contained in the `app/routes` folder. All controllers should be put in the `app/controllers` folder. At default, the `app/controllers` folder should look like the image below.
+
+![controllers-1](./documents/images/controllers-1.png)
+
+You can, however, create your own controllers. Note that, in doing so, you’d have to adhere to the following rules:
+
+*	Controller files should export an object whose values are all functions.
+*	The functions in the object exported by the controller file should all return an array of functions which all take 3 arguments – req, res and next. These arguments could be called whatever you like.
+
+A sample controller should look like the image below:
+
+```js
+function check() {
+  function step1(req, res, next) {
+    /**
+     * Native JavaScript code
+     */
+  }
+
+  function step2(req, res, next) {
+    /**
+     * Native JavaScript code
+     */
+  }
+
+  return [
+    step1,
+    step2
+  ]
+}
+
+module.exports = {
+  check
+}
+```
+
+## The Database Folder
+
+The `app/database` folder holds all database related files. It has 3 folders – `migrations`, `models` and `seeders` – and may have development SQLite databases as shown in the image below.
+
+![database-1](./documents/images/database-1.png)
+
+I’d like to talk about the `sequelize` an the `sequelize-cli` dependencies before moving on, as they’re key to all database related functions. I’d also urge you to visit [the sequelize documentation](https://sequelize.org) for more details. As you know by now, sequelize is an ORM similar to eloquent in the Laravel framework; sequelize-cli provides cli functions as artisan does in the Laravel framework. In short, sequelize creates database connections and sequelize-cli creates migrations, models and seeders. Please read the sequelize documentation.
+
+## The Middleware Folder
+
+The `app/middleware` folder contains all middleware needed to process requests. There are three subfolders in the `app/middleware` folder and they are:
+
+*	**core** – supplies functionality needed prior to handling route requests through controllers
+*	**error** – supplies functionality for handling errors resulting from handling requests.
+*	**guard** – guards route request as specifically defined.
+
+The `error` and `core` subfolders, in most cases, shall remain untouched; however, new `guard` middleware files can be created according to your specifications. There are two existing guard middleware:
+
+*	**check-auth** – which checks if a valid JWT was supply by the request. It works as an authentication guard. This functionality is powered by the `passport` and `passport-jwt` dependencies.
+*	**check-roles** – which checks if the user associated with the provided JWT has specified role or roles.
+
+You can use `guard` middleware in controller functions by calling them and spreading their results in to the return array as demonstrated in the image below.
+
+```js
+const checkAuthGuardMiddleware = require('../middleware/guards/check-auth');
+
+function check() {
+  function step1(req, res, next) {
+    /**
+     * Native JavaScript code
+     */
+  }
+
+  function step2(req, res, next) {
+    /**
+     * Native JavaScript code
+     */
+  }
+
+  return [
+    ...checkAuthGuardMiddleware(),
+    step1,
+    step2
+  ]
+}
+```
+
+Lastly, the specification for creating a `guard` middleware is the same as creating a controller function. The only difference is that, guard middleware files export a function instead of an object.
+
+## The Routes Folder
+
+The `app/routes` folder contains files that specify routes by which the server can be consumed. By default, there is only one route file – `auth.js`, the `index.js` file helps to gather all routes from individual route files and register them. You can create you own route files using the `auth.js` file as a guide. Bear in mind that all routes created in a specific route file would be prefixed by that the string `api/` and file’s name – this implies that a route `/name/place` in a file `area.js` would be registered as `api/area/name/place`. If you’re too lazy to look, here’s what the `auth.js` route file looks like.
+
+```js
+const express = require('express');
+
+const authController = require('../controllers/auth');
+
+const router = express.Router();
+
+router
+  .route('/login')
+  .post(...authController.login());
+
+router
+  .route('/logout')
+  .get(...authController.logout());
+
+router
+  .route('/register')
+  .post(...authController.register());
+
+router
+  .route('/user')
+  .get(...authController.user());
+
+router
+  .route('/refresh')
+  .post(...authController.refresh());
+
+module.exports = router
+```
+
+NB: you can chain multiple methods to one route like this:
+
+```js
+router.
+  .route('/my-route')
+  .get(/** JavaScript functions. */)
+  .post(/** JavaScript functions. */)
+  .delete(/** JavaScript functions. */);
+```
+
+## The Services Folder
+
+The `app/services` folder contains files that provide useful functionality using specified dependencies. By default, the `app/services` folder looks like this:
+
+![services-1](./documents/images/services-1.png)
+
+Below is a list of the functions provided by the services files in the image above:
+
+*	**crypt.js** – provides functions for hashing strings and check strings against hashes.
+*	**fastest-validator.js** – provides functions for validating JavaScript objects.
+*	**jwt.js** – provides functions for generating and validating JWTs.
+*	**passport.js** – provides function for checking authentication using JWTs.
+
+You can create you own service for any dependency of your choosing.
