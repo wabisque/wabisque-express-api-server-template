@@ -2,10 +2,10 @@
   "name": "wabisque-api-express-server-template",
   "version": "1.0.0",
   "description": "A template for creating server APIs with express and Node.js",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "nodemon $npm_package_main",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",

@@ -2,17 +2,19 @@
 
 ## Table of Contents
 
-* [Overview](#overview)
-    * [Initializing the Project](#initializing-the-project)
-    * [Project Layout](#project-layout)
-    * [Starting Dependencies of the Project](#starting-dependencies-of-the-project)
-* [ENV Variables](#env-variables)
-* [The Config Folder](#the-config-folder)
-* [The Controllers Folder](#the-controllers-folder)
-* [The Database Folder](#the-database-folder)
-* [The Middleware Folder](#the-middleware-folder)
-* [The Routes Folder](#the-routes-folder)
-* [The Services Folder](#the-services-folder)
+- [wabisque-express-api-server-template](#wabisque-express-api-server-template)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+    - [Initializing the Project](#initializing-the-project)
+    - [Project Layout](#project-layout)
+    - [Starting Dependencies of the Project](#starting-dependencies-of-the-project)
+  - [ENV Variables](#env-variables)
+  - [The Config Folder](#the-config-folder)
+  - [The Controllers Folder](#the-controllers-folder)
+  - [The Database Folder](#the-database-folder)
+  - [The Middleware Folder](#the-middleware-folder)
+  - [The Routes Folder](#the-routes-folder)
+  - [The Services Folder](#the-services-folder)
 
 ## Overview
 
@@ -42,9 +44,9 @@ npm run dev
 
 ### Project Layout
 
-The project has only one file, `index.js` which is located at its root folder. The contents of are structured in a readable manner with comments to show what each line of code does. You’ll, in most cases not alter the contents of this file, except for cases where you’d want to initialize a new service \[more on services later\], or cases where you’d like to remove or comment out development lines. Anyway, without further ado, I’ll discuss the contents of the `index.js` file.
+The project has only one file, `app.js` which is located at its root folder. The contents of are structured in a readable manner with comments to show what each line of code does. You’ll, in most cases not alter the contents of this file, except for cases where you’d want to initialize a new service \[more on services later\], or cases where you’d like to remove or comment out development lines. Anyway, without further ado, I’ll discuss the contents of the `app.js` file.
 
-* The first section of the `index.js` file are the import statements. This is what these statements look like:
+* The first section of the `app.js` file are appthe import statements. This is what these statements look like:
 
 ```js
 const dotenv = require('dotenv');
@@ -98,18 +100,18 @@ routes(app);
 errorMiddleware(app);
 ```
 
-* The final section of the “index.js” file is the initialization of the server. This is the section where the server is started or ran. This is what is looks like:
+* The final section of the `app.js` file is the initialization of the server. This is the section where the server is started or ran. This is what is looks like:
 
 ```js
 // initialization of the express server app.
-app.listen(process.env.SERVER_PORT, function (error) {
+app.listen(process.env.PORT, function (error) {
   if(error) return console.log('ERROR', error);
 
-  console.log('\x1b[0m %s\x1b[36m %s\x1b[0m','\n *** server running on', `http://localhost:${process.env.SERVER_PORT}`, '***\n')
+  console.log('\x1b[0m %s\x1b[36m %s\x1b[0m','\n *** server running on', `http://localhost:${process.env.PORT}`, '***\n')
 });
 ```
 
-With the “index.js” file out of the way, let’s try and understand the other files that back it up. I’ve gathered those files into various folders that exist in the “app” folder. The image below demonstrates how the “app” folder is structured:
+With the `app.js` file out of the way, let’s try and understand the other files that back it up. I’ve gathered those files into various folders that exist in the `app` folder. The image below demonstrates how the `app` folder is structured:
 
 ![overview-7](./documents/images/overview-7.png)
 
@@ -186,7 +188,7 @@ DB_USER=root
 DB_PASSWORD=
 DB_DATABASE=my_db
 
-SERVER_PORT=8181
+PORT=8181
 ```
 
 And their uses are as follows:
@@ -198,7 +200,7 @@ And their uses are as follows:
     *	**USER**: The username of the user trying to access the database server.
     *	**PASSWORD**: The password of the user trying to access the database server.
     *	**DATABASE**: The database to be utilized by the server.
-*	**SERVER_PORT**: The port number at which the server listens to requests. Leave this variable blank if you’d like to use the default port number.
+*	**PORT**: The port number at which the server listens to requests. Leave this variable blank if you’d like to use the default port number.
 
 ## The Config Folder
 

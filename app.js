@@ -37,8 +37,11 @@ routes(app);
 errorMiddleware(app);
 
 // initialization of the express server app.
-app.listen(process.env.SERVER_PORT, function (error) {
-  if(error) return console.log('ERROR', error);
+app.listen(process.env.PORT || 8081, function (error) {
+  if(error) {
+    console.log('ERROR', error);
+    process.exit()
+  }
 
-  console.log('\x1b[0m %s\x1b[36m %s\x1b[0m','\n *** server running on', `http://localhost:${process.env.SERVER_PORT}`, '***\n')
+  console.log('\x1b[0m %s\x1b[36m %s\x1b[0m','\n *** server running on', `http://localhost:${process.env.PORT || 8081}`, '***\n')
 });
