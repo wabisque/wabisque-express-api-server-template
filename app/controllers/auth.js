@@ -4,10 +4,12 @@ const cryptoService = require('../services/crypto');
 const jwtService = require('../services/jwt');
 
 const checkAuthGuardMiddleware = require('../middleware/guards/check-auth');
+const database = require('../config/database');
 
 function login() {
   async function firstStep(req, res, next) {
     const validationSchema = {
+      $$strict: 'remove',
       identifier: {
         type: 'string',
         empty: false,
@@ -17,6 +19,8 @@ function login() {
         empty: false,
       }
     };
+
+    req.trim();
     
     try {
       const validated = req.validate(validationSchema);
@@ -86,17 +90,18 @@ function logout() {
 function register() {
   async function firstStep(req, res, next) {
     const validationSchema = {
+      $$strict: 'remove',
       first_name: {
         type: 'string',
         empty: false,
-        pattern: /^([A-Za-z]*[-'])*([A-Za-z]+)$/,
+        pattern: /^([A-Za-z]*[-'\.])*([A-Za-z]+)$/,
         max: 100,
         min: 2
       },
       last_name: {
         type: 'string',
         empty: false,
-        pattern: /^([A-Za-z]*[-'])*([A-Za-z]+)$/,
+        pattern: /^([A-Za-z]*[-'\.])*([A-Za-z]+)$/,
         max: 100,
         min: 2
       },
@@ -104,7 +109,7 @@ function register() {
         type: 'string',
         optional: true,
         required: false,
-        pattern: /^([A-Za-z]*[-'])*([A-Za-z]+)(\s([A-Za-z]*[-'])*([A-Za-z]+))*$/,
+        pattern: /^([A-Za-z]*[-'\.])*([A-Za-z]+)(\s([A-Za-z]*[-'\.])*([A-Za-z]+))*$/,
         max: 100,
         min: 2
       },
@@ -151,6 +156,8 @@ function register() {
       }
     };
 
+    req.trim();
+
     try {
       const validated = req.validate(validationSchema);
 
@@ -163,16 +170,14 @@ function register() {
         const passwordHash = cryptoService.makeHash(req.body.password);
         const clientRoleDbInstance = await models.Role.findOne({ where: { name: 'Client' } });
 
-        const newUserDbInstance = await models.User.create({
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          other_names: req.body.other_names,
-          email: req.body.email,
-          username: req.body.username,
-          phone_number: req.body.phone_number,
-          hash: passwordHash.hash,
-          salt: passwordHash.salt
-        });
+        const formData = Object.assign({}, req.body);
+        delete formData.password;
+        delete formData.confirm_password;
+
+        formData.hash = passwordHash.hash;
+        formData.salt = passwordHash.salt;
+
+        const newUserDbInstance = await models.User.create(formData);
 
         await newUserDbInstance.addRole(clientRoleDbInstance);
 
@@ -207,6 +212,7 @@ function user() {
 function refresh() {
   async function firstStep(req, res, next) {
     const validationSchema = {
+      $$strict: 'remove',
       refresh_token: {
         type: 'string',
         empty: false

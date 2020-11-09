@@ -1,6 +1,6 @@
 ###
 // Login route test
-POST http://localhost:8181/api/auth/login
+POST http://localhost:8989/api/auth/login
 Content-Type: application/json
 
 {
@@ -10,35 +10,37 @@ Content-Type: application/json
 
 ###
 // Logout route test
-GET http://localhost:8181/api/auth/logout
+GET http://localhost:8989/api/auth/logout
 // Provide a valid bearer token
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImlhdCI6MTYwMzg3MTg3NiwiZXhwIjoxNjAzODcyMjk2fQ.mmlrQbAZff22-sXra534RBCA_lhr2_f8qKbA0OPBt33eUtpSwZoA9nogcOi0W_fBatfsaI6mXpgp5fA9h0h8fPTHXaMo6s2y17ifk91dkNEjYk1Cj2WTNCm2ZX4G36ONoBCCPEfCYd6s5B5k3xqPQlktx9o1OXUVvtK2L_NgvXDqKchtavvVVMljgWJ_hVLVrANdrO--CTiRFzbsgsTDVs6JBUuw02t_jeDzJoGxboBWUMq0VvO6A37xrr8WjifyZxDpAV-IxGwisLLRIFqeiqN-H-pe92M3NYkQrrH7UfzALl94HdhgXksp6iEWjYLDpJ9005siaVYepzRboITeg7skpUS17Lk7JGO6aK0tRsv4_F34X0LjdRDNw2XrUqYV8oqr8qopCxvyi5K5FT0QZXFm03lS4TxjWIqrUTYMNLkfVPl-IaHT84mwx4PmXSRA3i8sGEo4rXaltwkr2c_1PN-J42z2UVGe3bENYBJyr65uS5ogomDcUh4IHNRr7A9dEwfTh5nNerJ7c2IjxYfpUEskQXAcBj4diOW1XNBSj_lbLkRitgGE-6z5eXca5t-U62YQnWPPhb_6e1sfmv1O9zxCAk69cCdqm0kjPLEd7AoS0ECKee5pplRbRCbH8idhz52ziPng49iW1kLKYG-tzQhzaYmDbv5CK1OtsuD5WF4
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTYwNDgzMzk1MiwiZXhwIjoxNjA0ODM0MzcyfQ.qgCjqurNkpFmgX09NABNfH23IxljiV9jt9zG1-G5gUEPRXwdfRHu74enWSeuGnAZJkNR2Etjba8MnQKPFeQEcjRZ1q6oNDUhKmnTmIA7K6lQtbjqxMV5E-C2n-wnuBMD-3iXMlWh2IsqZkYroMaIpM6NcfqCHPwTARUBiphkeVa-QYkrkcqAuOm3MDxNcyHamTvMpA2n5khYsumqBhPKkPXXSO6wbh06332W--3CO7bi70G884Bn7596ZiYUtdgoTN4f-jVt6qXef7ZOCO26E5PEePK1t8U4WeLnphR_xa2Mxb_EZEtlB-wlHbuL6HN8E8lJwyIVje3_tzLgRYFKG3qeS3jRojVHaPJfQ8feJt-aPHHS6cHGsr7VZeZ4N_fhEb7pakzjZKzmxp9L68vN9O6PjaxAYpUYIETqOxHDMulGSeuQjUOodm4gcO61mKYVD0VqaDQPl5nx7HwxyUsy_bZEpj6o3cvrssnoRTqAIPsy4dgbyziEZdbemFOZYlgdKmv-lGb82X7NoZmccAV7XIUHLC3wosppb0LeIpeUqK9HuJaY5-WhTefohnN8k7rM9EFrKDVhg8sjjFwd-zV1AIH7UR2c4YTfmkjonL5lZbVtW9Hqi7NfL6eK8_GlRF3gxKfMrov0FthbeIzeCNzf7QPNtaaBxdL50TxZ6xlooq0
 
 ###
 // Register route test
-POST http://localhost:8181/api/auth/register
+POST http://localhost:8989/api/auth/register
 Content-Type: application/json
 
 {
   "first_name": "User",
   "last_name": "One",
-  "other_names": null,
+  "other_names": "",
   "email": "user1@mail.io",
   "username": "user1",
-  "phone_number": null,
+  "phone_number": "",
   "password": "mysecret",
-  "confirm_password": "mysecret"
+  "confirm_password": "mysecret",
+  "wend": true,
+  "dum": 0
 }
 
 ###
 // User route test
-GET http://localhost:8181/api/auth/user
+GET http://localhost:8989/api/auth/user
 // Provide a valid bearer token
 Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImlhdCI6MTYwMzg3MTg3NiwiZXhwIjoxNjAzODcyMjk2fQ.mmlrQbAZff22-sXra534RBCA_lhr2_f8qKbA0OPBt33eUtpSwZoA9nogcOi0W_fBatfsaI6mXpgp5fA9h0h8fPTHXaMo6s2y17ifk91dkNEjYk1Cj2WTNCm2ZX4G36ONoBCCPEfCYd6s5B5k3xqPQlktx9o1OXUVvtK2L_NgvXDqKchtavvVVMljgWJ_hVLVrANdrO--CTiRFzbsgsTDVs6JBUuw02t_jeDzJoGxboBWUMq0VvO6A37xrr8WjifyZxDpAV-IxGwisLLRIFqeiqN-H-pe92M3NYkQrrH7UfzALl94HdhgXksp6iEWjYLDpJ9005siaVYepzRboITeg7skpUS17Lk7JGO6aK0tRsv4_F34X0LjdRDNw2XrUqYV8oqr8qopCxvyi5K5FT0QZXFm03lS4TxjWIqrUTYMNLkfVPl-IaHT84mwx4PmXSRA3i8sGEo4rXaltwkr2c_1PN-J42z2UVGe3bENYBJyr65uS5ogomDcUh4IHNRr7A9dEwfTh5nNerJ7c2IjxYfpUEskQXAcBj4diOW1XNBSj_lbLkRitgGE-6z5eXca5t-U62YQnWPPhb_6e1sfmv1O9zxCAk69cCdqm0kjPLEd7AoS0ECKee5pplRbRCbH8idhz52ziPng49iW1kLKYG-tzQhzaYmDbv5CK1OtsuD5WF4
 
 ###
 // Register route test
-POST http://localhost:8181/api/auth/refresh
+POST http://localhost:8989/api/auth/refresh
 Content-Type: application/json
 
 {

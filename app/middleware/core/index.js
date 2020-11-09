@@ -5,8 +5,10 @@ const fastestValidatorService = require('../../services/fastest-validator');
 
 function exec(app) {
   function trim(req, res, next) {
-    for(const field in req.body) {
-      if((typeof req.body[field] == 'string' || req.body[field] instanceof String) && !req.body[field]) req.body[field] = null
+    req.trim = function() {
+      for(const field in req.body) {
+        if((typeof req.body[field] == 'string' || req.body[field] instanceof String) && !req.body[field]) req.body[field] = null
+      }
     }
 
     next()
