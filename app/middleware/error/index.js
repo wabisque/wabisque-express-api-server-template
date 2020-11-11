@@ -20,7 +20,7 @@ function exec(app) {
   
             responseData.formErrors = [];
   
-            err.errors.forEach(function(formError) {
+            err.errors.forEach(formError => {
               responseData.formErrors.push({
                 type: formError.type,
                 message: (identifierOptions.includes(formError.path) && formError.type == 'unique violation' && formError.instance instanceof models.User) ? `The '${formError.path}' already belongs to another user.` : formError.message,

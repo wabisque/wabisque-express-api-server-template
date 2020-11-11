@@ -37,7 +37,7 @@ routes(app);
 errorMiddleware(app);
 
 // initialization of the express server app.
-app.listen(process.env.PORT || 8081, function (error) {
+app.listen(process.env.PORT || 8081, error => {
   if(error) {
     console.log('ERROR', error);
     process.exit()

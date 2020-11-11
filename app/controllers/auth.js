@@ -236,7 +236,7 @@ function refresh() {
         });
         else {
           const userDbInstance = await refreshTokenDbInstance.getUser();
-          res.send(await jwtService.generateAccessToken(userDbInstance));
+          res.send({ token: await jwtService.generateAccessToken(userDbInstance) })
         }
       }
     } catch (error) {

@@ -15,7 +15,7 @@ function exec(sequelize, DataTypes) {
       const values = this.getSafeData();
       
       values.roles = await this.getRoles();
-      values.roles = values.roles.map(function(role) {
+      values.roles = values.roles.map(role => {
         const safeRole = role.toJSON();
         delete safeRole.UserRole;
 
@@ -27,12 +27,12 @@ function exec(sequelize, DataTypes) {
 
     async revokeAllAccessTokens() {
       const accessTokens = await this.getAccessTokens();
-      accessTokens.map(async function (accessToken) { await accessToken.revoke() })
+      accessTokens.map(async accessToken => await accessToken.revoke())
     }
 
     async revokeAllRefreshTokens() {
       const refreshTokens = await this.getRefreshTokens();
-      refreshTokens.map(async function (refreshToken) { await refreshToken.revoke() })
+      refreshTokens.map(async refreshToken => await refreshToken.revoke())
     }
 
     async hasAnyRoles(roles) {

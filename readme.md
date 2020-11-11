@@ -104,7 +104,7 @@ errorMiddleware(app);
 
 ```js
 // initialization of the express server app.
-app.listen(process.env.PORT, function (error) {
+app.listen(process.env.PORT, error => {
   if(error) return console.log('ERROR', error);
 
   console.log('\x1b[0m %s\x1b[36m %s\x1b[0m','\n *** server running on', `http://localhost:${process.env.PORT}`, '***\n')

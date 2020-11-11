@@ -15,7 +15,7 @@ function exec(app) {
   }
 
   function notify(req, res, next) {
-    req.notify = function (title, message, status = 'success') {
+    req.notify = function(title, message, status = 'success') {
       const statusOptions = ['success', 'info', 'warning', 'danger'];
   
       return {
@@ -29,7 +29,7 @@ function exec(app) {
   }
   
   function validate(req, res, next) {
-    req.validate = function (schema) {
+    req.validate = function(schema) {
       return fastestValidatorService.validate(schema, req.body)
     }
   

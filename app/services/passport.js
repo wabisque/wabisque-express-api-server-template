@@ -15,7 +15,7 @@ const options = {
   ignoreExpiration: true
 };
 
-const strategy_jwt = new passportJwt.Strategy(options, async function (payload, done) {
+const strategy_jwt = new passportJwt.Strategy(options, async (payload, done) => {
   try {
     const accessTokenDbInstance = await models.AccessToken.findOne({ where: { id: payload.sub, revoked_at: null } });
 

@@ -49,7 +49,7 @@ function initialize() {
     'jwt_refresh_rsa_priv.pem',
   ];
 
-  options.forEach(function (opt) { if(!keys.includes(opt)) return generateKeyPairs() })
+  options.forEach(opt => { if(!keys.includes(opt)) return generateKeyPairs() })
 }
 
 async function generateAccessToken(userDbInstance) {
